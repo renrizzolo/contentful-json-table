@@ -2,6 +2,12 @@
 
 A [Contentful](https://contentful.com) field extension for the Object field type, designed for creating nice tables.
 
+The extension in use:
+![alt text](https://github.com/renrizzolo/contentful-json-table/blob/master/json-table-extension.png "Contentful Json Table")
+
+Read-only view:
+![alt text](https://github.com/renrizzolo/contentful-json-table/blob/master/read-only-view.png.png "Contentful Json Table")
+
 
 ## Getting started with local development
 ```bash
@@ -30,8 +36,8 @@ It goes a little something like this:
 
 ## Usage (React)
 
-This is how I'm using it.
-NB: this could be more simplified:
+This is how I'm using it.  
+NB: this could be more simplified:  
 - I use hidden keys (starting with __) for e.g a heading with a colspan of 2 that has 2 cells below it, cell 1 would have the heading 1 key, cell 2 would have a __heading 1 key
 - I use `React.createElement` in case I want to specify the element with the `el` property
 
