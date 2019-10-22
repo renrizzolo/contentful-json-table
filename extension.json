@@ -1,0 +1,8 @@
+{
+  "id": "json-table",
+  "name": "json-table",
+  "srcdoc": "./build/index.html",
+  "fieldTypes": [
+    "Object"
+  ]
+}
