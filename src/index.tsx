@@ -7,7 +7,9 @@ import {
   TableHead,
   Note,
   Button,
-  Paragraph
+  Paragraph,
+  CheckboxField,
+  FieldGroup
 } from '@contentful/forma-36-react-components';
 import { init, FieldExtensionSDK } from 'contentful-ui-extensions-sdk';
 import '@contentful/forma-36-react-components/dist/styles.css';
@@ -22,6 +24,7 @@ interface AppProps {
 interface AppState {
   value?: [{ data: any[]; tableHeadings: any[] }];
   changing?: object;
+  readOnly: boolean;
   settings?: string;
   settingsMenu?: string;
 }
@@ -31,6 +34,7 @@ export class App extends React.Component<AppProps, AppState> {
     super(props);
     this.state = {
       changing: {},
+      readOnly: false,
       settings: null,
       settingsMenu: null,
       value: props.sdk.field.getValue() || [
@@ -84,7 +88,7 @@ export class App extends React.Component<AppProps, AppState> {
     }
   };
 
-  onExternalChange = (value) => {
+  onExternalChange = value => {
     this.setState({ value });
   };
 
@@ -105,16 +109,18 @@ export class App extends React.Component<AppProps, AppState> {
       console.log(newRow);
       data.push(newRow);
       const val = data;
-      
-      this.setState({
-        value: [
-          {
-            data: val,
-            tableHeadings
-          }
-        ]
-      }, await this.update());
-      
+
+      this.setState(
+        {
+          value: [
+            {
+              data: val,
+              tableHeadings
+            }
+          ]
+        },
+        await this.update()
+      );
     }
   };
 
@@ -142,14 +148,17 @@ export class App extends React.Component<AppProps, AppState> {
     let newHeading = { key: headingName };
     tableHeadings.push(newHeading);
     data.map(d => (d[headingName] = { text: '' }));
-    this.setState({
-      value: [
-        {
-          data,
-          tableHeadings
-        }
-      ]
-    }, await this.update());
+    this.setState(
+      {
+        value: [
+          {
+            data,
+            tableHeadings
+          }
+        ]
+      },
+      await this.update()
+    );
   };
 
   removeColumn = async () => {
@@ -202,7 +211,6 @@ export class App extends React.Component<AppProps, AppState> {
 
   // update/replace cell data with an @obj
   setCell = async (key: string, row: number, obj: object, isHeading: boolean) => {
-
     const { data, tableHeadings } = this.getData();
 
     if (isHeading) {
@@ -234,10 +242,16 @@ export class App extends React.Component<AppProps, AppState> {
       },
       await this.update()
     );
-  }
+  };
 
   // update single @property of cell data
-  setCellValue = async (key: string, row: number, id: string, property: string = 'text', isHeading: boolean) => {
+  setCellValue = async (
+    key: string,
+    row: number,
+    id: string,
+    property: string = 'text',
+    isHeading: boolean
+  ) => {
     const val = document.getElementById(id).value;
     console.log(key, val);
 
@@ -287,14 +301,9 @@ export class App extends React.Component<AppProps, AppState> {
   };
   hideSettingsMenu = () => this.setState({ settingsMenu: null });
 
-  updateSettings = (
-    data: object,
-    key: string,
-    row: number,
-    isHeading: boolean
-  ) => {
+  updateSettings = (data: object, key: string, row: number, isHeading: boolean) => {
     console.log(data, key, row);
-    this.setCell(key, row, data, isHeading)
+    this.setCell(key, row, data, isHeading);
     // this.setCellValue(key, row, data, data, isHeading);
   };
 
@@ -341,6 +350,8 @@ export class App extends React.Component<AppProps, AppState> {
 
   setChanging = changing => this.setState({ changing });
 
+  setReadOnly = () => this.setState({ readOnly: !this.state.readOnly });
+
   // https://stackoverflow.com/a/14592469
   renameObjectKey = (obj: object, oldKey: string, newKey: string) => {
     if (oldKey !== newKey) {
@@ -371,6 +382,21 @@ export class App extends React.Component<AppProps, AppState> {
     return (
       <div>
         <div style={{ marginLeft: 42 }}>
+          <FieldGroup>
+            <CheckboxField
+              labelText={'Read-only view'}
+              name="readonly"
+              checked={this.state.readOnly}
+              value="yes"
+              onChange={this.setReadOnly}
+              labelIsLight={!this.state.readOnly}
+              //  inputProps={{
+              //    onBlur: action('onBlur'),
+              //    onFocus: action('onFoucs')
+              //  }}
+              id="readonly-checkbox"
+            />
+          </FieldGroup>
           {!data && <Note>Data object missing</Note>}
           {!tableHeadings && <Note>Table headings object missing</Note>}
           <Table>
@@ -381,6 +407,7 @@ export class App extends React.Component<AppProps, AppState> {
                     ({ key, ...rest }, i) =>
                       !key.startsWith('__') && (
                         <Cell
+                          readOnly={this.state.readOnly}
                           isHeading
                           text={key}
                           headingKey={key}
@@ -399,7 +426,7 @@ export class App extends React.Component<AppProps, AppState> {
               {data &&
                 data.map((key, index) => (
                   <>
-                    {this.state.arrows === index && (
+                    {this.state.arrows === index && !this.state.readOnly && (
                       <div
                         style={{
                           display: 'flex',
@@ -432,6 +459,7 @@ export class App extends React.Component<AppProps, AppState> {
 
                           return text && !text.startsWith('__') ? (
                             <Cell
+                              readOnly={this.state.readOnly}
                               isHeading={false}
                               id={`row-${index}-cell-${i}`}
                               text={text}
@@ -444,6 +472,7 @@ export class App extends React.Component<AppProps, AppState> {
                           ) : (
                             !text && (
                               <Cell
+                                readOnly={this.state.readOnly}
                                 isHeading={false}
                                 id={`row-${index}-cell-${i}`}
                                 headingKey={heading.key}
@@ -463,6 +492,7 @@ export class App extends React.Component<AppProps, AppState> {
           </Table>
           <br />
           <Paragraph>Hint: press Enter to update cell data</Paragraph>
+          <br />
           <Button icon="Plus" onClick={this.addRow}>
             Row
           </Button>{' '}

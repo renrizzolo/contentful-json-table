@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TextInput, TableCell } from '@contentful/forma-36-react-components';
+import { TextInput, TableCell, Table } from '@contentful/forma-36-react-components';
 import { InputButton } from './InputButton';
 import { SettingsMenu } from './SettingsMenu';
 export const Cell = ({
@@ -21,10 +21,13 @@ export const Cell = ({
   settings,
   settingsMenu,
   empty,
+  readOnly,
   ...rest
 }) => {
   const { id: currentId } = changing;
-  return (
+  return readOnly ? (
+    <TableCell {...rest} dangerouslySetInnerHTML={{ __html: text ? text : '&nbsp'}} />
+  ) : (
     <TableCell
       {...rest}
       key={id}
@@ -39,7 +42,7 @@ export const Cell = ({
           color: empty ? (currentId === id ? 'black' : 'silver') : 'black'
         }}
         onFocus={empty ? handleFocus : () => null}
-        width="small"
+        width="medium"
         value={empty ? 'empty' : text}
         id={id}
         onChange={() => {
@@ -47,13 +50,16 @@ export const Cell = ({
         }}
       />
       {currentId === id && (
-        <InputButton icon="CheckCircle" onClick={() => setCellValue(headingKey, rowIndex, id)} />
+        <InputButton
+          icon="CheckCircle"
+          onClick={() => setCellValue(headingKey, rowIndex, id)}
+        />
       )}
       {settings === id && currentId !== id && (
         <InputButton
           icon={settingsMenu === id ? 'Close' : 'Settings'}
           onClick={() => showSettingsMenu(id)}
-          style={settingsMenu === id ? { right: 0 } : {}}
+          style={{ right: 5 }}
         />
       )}
       {settingsMenu === id && (
