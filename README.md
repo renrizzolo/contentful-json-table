@@ -1,11 +1,15 @@
-# contentful-json-table
+# contentful JSON Table
+
+Who loves tables? Not me but I'd sure like to be able to have my editors create them inline on Contentful!
 
 A [Contentful](https://contentful.com) field extension for the Object field type, designed for creating nice tables.
 
-The extension in use:
+:rotating_light: work in progress!
+
+The extension in use:  
 ![alt text](https://github.com/renrizzolo/contentful-json-table/blob/master/json-table-extension.png "Contentful Json Table")
 
-Read-only view:
+Read-only view:  
 ![alt text](https://github.com/renrizzolo/contentful-json-table/blob/master/read-only-view.png.png "Contentful Json Table")
 
 
