@@ -5,7 +5,7 @@ import { IconButton } from '@contentful/forma-36-react-components';
 export const InputButton = ({ onClick, icon, style }) => (
          <IconButton
          iconProps={{className: '', icon, }}
-           buttonType="naked"
+           buttonType="muted"
            size="small"
            icon={icon}
            style={{
