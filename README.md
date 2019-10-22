@@ -9,7 +9,7 @@ A [Contentful](https://contentful.com) field extension for the Object field type
 The extension in use:  
 ![Contentful JSON table in use](https://github.com/renrizzolo/contentful-json-table/blob/master/json-table-extension.png "Contentful Json Table")
 
-Read-only view:  
+Same as above but in read-only view:  
 ![Contentful JSON table read-only view](https://github.com/renrizzolo/contentful-json-table/blob/master/read-only-view.png "Contentful Json Table")
 
 
