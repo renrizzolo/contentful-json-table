@@ -22,7 +22,7 @@ interface AppProps {
 }
 
 interface AppState {
-  value?: [{ data: any[]; tableHeadings: any[] }];
+  value?: { data: any[]; tableHeadings: any[] };
   changing?: object;
   readOnly: boolean;
   settings?: string;
@@ -31,15 +31,18 @@ interface AppState {
 
 export class App extends React.Component<AppProps, AppState> {
   constructor(props: AppProps) {
+    console.log(props.sdk.field.getValue());
+
     super(props);
     this.state = {
       changing: {},
       readOnly: false,
       settings: null,
       settingsMenu: null,
-      value: props.sdk.field.getValue() || [
-        { data: [{ 'Heading 1': { text: 'col 1' } }], tableHeadings: [{ key: 'Heading 1' }] }
-      ]
+      value: props.sdk.field.getValue() || {
+        data: [{ 'Heading 1': { text: 'col 1' } }],
+        tableHeadings: [{ key: 'Heading 1' }]
+      }
     };
   }
 
@@ -89,10 +92,13 @@ export class App extends React.Component<AppProps, AppState> {
   };
 
   onExternalChange = value => {
-    this.setState({ value });
+    console.log('external change', value);
+    if (value) this.setState({ value });
   };
 
   update = async () => {
+    console.log('running update');
+
     const { value } = this.state;
     if (value) {
       await this.props.sdk.field.setValue(value);
@@ -102,26 +108,21 @@ export class App extends React.Component<AppProps, AppState> {
   };
 
   addRow = async () => {
-    const { value } = this.state;
-    if (value && value[0]) {
-      const { data, tableHeadings } = value[0];
-      let newRow = {};
-      console.log(newRow);
-      data.push(newRow);
-      const val = data;
+    const { data, tableHeadings } = this.getData();
+    let newRow = {};
+    console.log(newRow);
+    data.push(newRow);
+    const val = data;
 
-      this.setState(
-        {
-          value: [
-            {
-              data: val,
-              tableHeadings
-            }
-          ]
-        },
-        await this.update()
-      );
-    }
+    this.setState(
+      {
+        value: {
+          data: val,
+          tableHeadings
+        }
+      },
+      await this.update()
+    );
   };
 
   removeRow = async () => {
@@ -131,12 +132,10 @@ export class App extends React.Component<AppProps, AppState> {
 
     this.setState(
       {
-        value: [
-          {
-            data,
-            tableHeadings
-          }
-        ]
+        value: {
+          data,
+          tableHeadings
+        }
       },
       await this.update()
     );
@@ -150,12 +149,10 @@ export class App extends React.Component<AppProps, AppState> {
     data.map(d => (d[headingName] = { text: '' }));
     this.setState(
       {
-        value: [
-          {
-            data,
-            tableHeadings
-          }
-        ]
+        value: {
+          data,
+          tableHeadings
+        }
       },
       await this.update()
     );
@@ -172,12 +169,10 @@ export class App extends React.Component<AppProps, AppState> {
 
     this.setState(
       {
-        value: [
-          {
-            data,
-            tableHeadings
-          }
-        ]
+        value: {
+          data,
+          tableHeadings
+        }
       },
       await this.update()
     );
@@ -197,12 +192,10 @@ export class App extends React.Component<AppProps, AppState> {
     console.log(test);
     this.setState(
       {
-        value: [
-          {
-            data,
-            tableHeadings
-          }
-        ],
+        value: {
+          data,
+          tableHeadings
+        },
         changing: {}
       },
       await this.update()
@@ -232,12 +225,10 @@ export class App extends React.Component<AppProps, AppState> {
 
     this.setState(
       {
-        value: [
-          {
-            data,
-            tableHeadings
-          }
-        ],
+        value: {
+          data,
+          tableHeadings
+        },
         changing: {}
       },
       await this.update()
@@ -270,12 +261,10 @@ export class App extends React.Component<AppProps, AppState> {
 
     this.setState(
       {
-        value: [
-          {
-            data,
-            tableHeadings
-          }
-        ],
+        value: {
+          data,
+          tableHeadings
+        },
         changing: {}
       },
       await this.update()
@@ -329,12 +318,10 @@ export class App extends React.Component<AppProps, AppState> {
 
     this.setState(
       {
-        value: [
-          {
-            data,
-            tableHeadings
-          }
-        ]
+        value: {
+          data,
+          tableHeadings
+        }
       },
       await this.update()
     );
@@ -342,8 +329,8 @@ export class App extends React.Component<AppProps, AppState> {
 
   getData = () => {
     const { value } = this.state;
-    if (value && value[0]) {
-      return value[0];
+    if (value) {
+      return value;
     }
     return { data: [], tableHeadings: [] };
   };
@@ -364,9 +351,9 @@ export class App extends React.Component<AppProps, AppState> {
   handleFocus = event => event.target.select();
 
   render = () => {
-    console.log(this.state.value);
+    console.log('va', this.state.value);
 
-    const { data, tableHeadings } = this.state.value ? this.state.value[0] : {};
+    const { data, tableHeadings } = this.state.value;
     const cellDefaults = {
       handleFocus: this.handleFocus,
       showSettings: this.showSettings,
