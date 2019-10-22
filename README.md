@@ -7,10 +7,10 @@ A [Contentful](https://contentful.com) field extension for the Object field type
 :rotating_light: work in progress!
 
 The extension in use:  
-![alt text](https://github.com/renrizzolo/contentful-json-table/blob/master/json-table-extension.png "Contentful Json Table")
+![Contentful JSON table in use](https://github.com/renrizzolo/contentful-json-table/blob/master/json-table-extension.png "Contentful Json Table")
 
 Read-only view:  
-![alt text](https://github.com/renrizzolo/contentful-json-table/blob/master/read-only-view.png.png "Contentful Json Table")
+![Contentful JSON table read-only view](https://github.com/renrizzolo/contentful-json-table/blob/master/read-only-view.png "Contentful Json Table")
 
 
 ## Getting started with local development
