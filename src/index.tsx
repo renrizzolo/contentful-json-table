@@ -24,18 +24,18 @@ interface AppProps {
 interface AppState {
   value?: { data: any[]; tableHeadings: any[] };
   changing?: object;
-  readOnly: boolean;
+  arrows?: boolean;
+  readOnly?: boolean;
   settings?: string;
   settingsMenu?: string;
 }
 
 export class App extends React.Component<AppProps, AppState> {
   constructor(props: AppProps) {
-    console.log(props.sdk.field.getValue());
-
     super(props);
     this.state = {
       changing: {},
+      arrows: false,
       readOnly: false,
       settings: null,
       settingsMenu: null,
@@ -184,12 +184,9 @@ export class App extends React.Component<AppProps, AppState> {
     const originalHeading = tableHeadings[i].key;
     tableHeadings[i].key = val;
 
-    const test = data.map(d => {
-      console.log(d);
-
+    data.map(d => {
       this.renameObjectKey(d, originalHeading, val);
     });
-    console.log(test);
     this.setState(
       {
         value: {
@@ -337,7 +334,7 @@ export class App extends React.Component<AppProps, AppState> {
 
   setChanging = changing => this.setState({ changing });
 
-  setReadOnly = () => this.setState({ readOnly: !this.state.readOnly });
+  toggleReadOnly = () => this.setState({ readOnly: !this.state.readOnly });
 
   // https://stackoverflow.com/a/14592469
   renameObjectKey = (obj: object, oldKey: string, newKey: string) => {
@@ -375,17 +372,21 @@ export class App extends React.Component<AppProps, AppState> {
               name="readonly"
               checked={this.state.readOnly}
               value="yes"
-              onChange={this.setReadOnly}
+              onChange={this.toggleReadOnly}
               labelIsLight={!this.state.readOnly}
-              //  inputProps={{
-              //    onBlur: action('onBlur'),
-              //    onFocus: action('onFoucs')
-              //  }}
               id="readonly-checkbox"
             />
           </FieldGroup>
-          {!data && <Note>Data object missing</Note>}
-          {!tableHeadings && <Note>Table headings object missing</Note>}
+          {!data && (
+            <Note noteType="warning">
+              <code>data</code> object missing
+            </Note>
+          )}
+          {!tableHeadings && (
+            <Note noteType="warning">
+              <code>tableHeadings</code> object missing
+            </Note>
+          )}
           <Table>
             <TableHead>
               <TableRow>
@@ -394,13 +395,13 @@ export class App extends React.Component<AppProps, AppState> {
                     ({ key, ...rest }, i) =>
                       !key.startsWith('__') && (
                         <Cell
+                          key={i}
                           readOnly={this.state.readOnly}
                           isHeading
                           text={key}
                           headingKey={key}
                           id={`heading-${i}`}
                           rowIndex={i}
-                          // cellIndex={i}
                           {...cellDefaults}
                           setCellValue={this.setHeadingValue}
                           {...rest}
@@ -443,12 +444,13 @@ export class App extends React.Component<AppProps, AppState> {
                         tableHeadings.map((heading, i) => {
                           const row = key[heading.key];
                           const { text, ...rest } = row || {};
-
+                          const id = `row-${index}-cell-${i}`;
                           return text && !text.startsWith('__') ? (
                             <Cell
                               readOnly={this.state.readOnly}
                               isHeading={false}
-                              id={`row-${index}-cell-${i}`}
+                              id={id}
+                              key={id}
                               text={text}
                               headingKey={heading.key}
                               rowIndex={index}
@@ -461,7 +463,8 @@ export class App extends React.Component<AppProps, AppState> {
                               <Cell
                                 readOnly={this.state.readOnly}
                                 isHeading={false}
-                                id={`row-${index}-cell-${i}`}
+                                id={id}
+                                key={id}
                                 headingKey={heading.key}
                                 rowIndex={index}
                                 cellIndex={i}
