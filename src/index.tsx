@@ -393,7 +393,7 @@ export class App extends React.Component<AppProps, AppState> {
                 {tableHeadings &&
                   tableHeadings.map(
                     ({ key, ...rest }, i) =>
-                      !key.startsWith('__') && (
+                      key && !key.startsWith('__') && (
                         <Cell
                           key={i}
                           readOnly={this.state.readOnly}
