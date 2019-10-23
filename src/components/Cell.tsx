@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import TableCell from '@contentful/forma-36-react-components/dist/components/Table/TableRow';
+import TableCell from '@contentful/forma-36-react-components/dist/components/Table/TableCell';
 import TextInput from '@contentful/forma-36-react-components/dist/components/TextInput';
 import { InputButton } from './InputButton';
 import { SettingsMenu } from './SettingsMenu';
