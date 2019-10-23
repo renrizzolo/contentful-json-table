@@ -1,15 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { UnControlled as CodeMirror } from 'react-codemirror2';
+
 import 'codemirror/lib/codemirror.css';
-import 'codemirror/theme/base16-light.css';
+import 'codemirror/theme/material.css';
+import 'codemirror/addon/lint/lint.css';
+import 'codemirror/mode/javascript/javascript';
+import 'codemirror/addon/edit/matchbrackets';
+import 'codemirror/addon/lint/lint';
+import 'codemirror/addon/lint/json-lint';
+
+import { Controlled as CodeMirror } from 'react-codemirror2';
 import { Paragraph } from '@contentful/forma-36-react-components';
 import NotificationItem from '@contentful/forma-36-react-components/dist/components/Notification/NotificationItem';
+const jsonlint = require('jsonlint-mod');
+window.jsonlint = jsonlint;
 
 // Incomplete React version of https://github.com/trival/contentful-extensions/blob/master/samples/json-editor/src/js/json-editor.js
 
 const JsonCodemirror = ({ value, options, onBeforeChange, onChange }) => {
+
   const [message, setMessage] = useState('');
+  const [editorValue, setEditorValue] = useState(value);
+
+  // subscribe to value prop changes
+  useEffect(() => {
+      console.log('received new value prop');
+      
+      setEditorValue(value);
+  }, [value])
 
   const isValidJson = str => {
     var parsed;
@@ -34,16 +52,25 @@ const JsonCodemirror = ({ value, options, onBeforeChange, onChange }) => {
     }
   };
   const changeHandler = (editor, data, value) => {
+    // why so buggy? :(
     if (value === '') {
       setMessage(''); // don't show invalid message
     } else if (isValidJson(value)) {
       var val = JSON.parse(value);
+      // onChange > useEffect will propagate this
+      // setEditorValue(JSON.stringify(val));
       setMessage('');
+      console.log('setting value');
+      console.log('not broken', val);
       onChange(editor, data, val);
     } else {
+      var val2 = JSON.stringify(value);
+      console.log('broken!', value);
+      setEditorValue(val2);
       setMessage('JSON is invalid');
     }
   };
+
   return (
     <div>
       <Paragraph>Edit the raw JSON at your own risk {`>.<`}</Paragraph>
@@ -53,16 +80,14 @@ const JsonCodemirror = ({ value, options, onBeforeChange, onChange }) => {
         </NotificationItem>
       )}
       <CodeMirror
-        value={beautify(value)}
+        value={beautify(editorValue)}
         options={options}
-        // onBeforeChange={(editor, data, value) => {
-        //   if (isValidJson(value)) {
-        //     onBeforeChange(editor, data, value)
-        //   }
-        // }}
-        onChange={(editor, data, value) => {
+        onBeforeChange={(editor, data, value) => {
           changeHandler(editor, data, value);
         }}
+        // onChange={(editor, data, value) => {
+        //   changeHandler(editor, data, value);
+        // }}
       />
     </div>
   );
@@ -74,12 +99,14 @@ JsonCodemirror.defaultProps = {
   options: {
     matchBrackets: true,
     autoCloseBrackets: true,
-    mode: { name: 'javascript', json: true },
+    mode: 'application/json',
     lineWrapping: true,
     lineNumbers: true,
     viewportMargin: Infinity,
     indentUnit: 4,
-    theme: 'base16-light'
+    theme: 'material',
+    gutters: ['CodeMirror-lint-markers'],
+    lint: jsonlint
   }
 };
 

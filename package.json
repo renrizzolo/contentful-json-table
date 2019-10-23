@@ -37,6 +37,7 @@
     "@contentful/forma-36-tokens": "^0.3.0",
     "codemirror": "^5.49.2",
     "contentful-ui-extensions-sdk": "3.9.0",
+    "jsonlint-mod": "^1.7.5",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-codemirror2": "^6.0.0",
