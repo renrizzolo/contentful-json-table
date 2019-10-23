@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { render } from 'react-dom';
-import {
-  Table,
-  TableRow,
-  TableBody,
-  TableHead,
-  Note,
-  Button,
-  Paragraph,
-  CheckboxField,
-  FieldGroup
-} from '@contentful/forma-36-react-components';
+
+import Table from '@contentful/forma-36-react-components/dist/components/Table/Table'
+import TableRow from '@contentful/forma-36-react-components/dist/components/Table/TableRow';
+import TableBody from '@contentful/forma-36-react-components/dist/components/Table/TableBody';
+import TableHead from '@contentful/forma-36-react-components/dist/components/Table/TableHead';
+import Note from '@contentful/forma-36-react-components/dist/components/Note';
+import Button from '@contentful/forma-36-react-components/dist/components/Button'
+import Paragraph from '@contentful/forma-36-react-components/dist/components/Typography/Paragraph';
+import CheckboxField from '@contentful/forma-36-react-components/dist/components/CheckboxField';
+import FieldGroup from '@contentful/forma-36-react-components/dist/components/Form/FieldGroup';
+
 import { init, FieldExtensionSDK } from 'contentful-ui-extensions-sdk';
 import '@contentful/forma-36-react-components/dist/styles.css';
 import './index.css';

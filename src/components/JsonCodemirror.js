@@ -8,10 +8,10 @@ import 'codemirror/mode/javascript/javascript';
 import 'codemirror/addon/edit/matchbrackets';
 import 'codemirror/addon/lint/lint';
 import 'codemirror/addon/lint/json-lint';
-
-import { Controlled as CodeMirror } from 'react-codemirror2';
-import { Paragraph } from '@contentful/forma-36-react-components';
+import Paragraph from '@contentful/forma-36-react-components/dist/components/Typography/Paragraph';
 import NotificationItem from '@contentful/forma-36-react-components/dist/components/Notification/NotificationItem';
+import { Controlled as CodeMirror } from 'react-codemirror2';
+
 const jsonlint = require('jsonlint-mod');
 window.jsonlint = jsonlint;
 

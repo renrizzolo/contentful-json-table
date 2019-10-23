@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { TextField, Button } from '@contentful/forma-36-react-components';
+import TextField from '@contentful/forma-36-react-components/dist/components/TextField';
+import Button from '@contentful/forma-36-react-components/dist/components/Button';
 
 export const SettingsMenu = ({
   updateSettings,

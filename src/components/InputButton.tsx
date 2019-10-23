@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { IconButton } from '@contentful/forma-36-react-components';
+import IconButton from '@contentful/forma-36-react-components/dist/components/IconButton';
 
 export const InputButton = ({ onClick, icon, style }) => (
          <IconButton
