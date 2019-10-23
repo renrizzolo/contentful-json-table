@@ -15,7 +15,7 @@ export const SettingsMenu = ({
   id,
   isHeading
 }) => {
-const [state, setState] = useState({})
+const [state, setState] = useState({className, colSpan, rowSpan, el})
 console.log(state)
   return (
     <div
@@ -34,7 +34,7 @@ console.log(state)
         textInputProps={{ style: styles.input, width: 'small' }}
         formLabelProps={{ style: styles.label }}
         onChange={e => setState({ ...state, className: e.target.value, })}
-        value={className}
+        value={state.className}
         id="className"
         name="className"
         labelText="className"
@@ -43,7 +43,7 @@ console.log(state)
         textInputProps={{ style: styles.input, width: 'small', type: 'number' }}
         formLabelProps={{ style: styles.label }}
         onChange={e => setState({ ...state, colSpan: e.target.value, })}
-        value={colSpan}
+        value={state.colSpan}
         id="colSpan"
         name="colSpan"
         labelText="colSpan"
@@ -52,7 +52,7 @@ console.log(state)
         textInputProps={{ style: styles.input, width: 'small', type: 'number' }}
         formLabelProps={{ style: styles.label }}
         onChange={e => setState({ ...state, rowSpan: e.target.value, })}
-        value={rowSpan}
+        value={state.rowSpan}
         id="rowSpan"
         name="rowSpan"
         labelText="rowSpan"
@@ -60,8 +60,8 @@ console.log(state)
       <TextField
         textInputProps={{ style: styles.input, width: 'small' }}
         formLabelProps={{ style: styles.label }}
-        onChange={e => setState({ ...state, rowSpan: e.target.value, })}
-        value={el}
+        onChange={e => setState({ ...state, el: e.target.value, })}
+        value={state.el}
         id="el"
         name="el"
         labelText="el"
