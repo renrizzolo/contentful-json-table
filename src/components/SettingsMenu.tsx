@@ -86,7 +86,7 @@ SettingsMenu.propTypes = {
   colSpan: PropTypes.string,
   rowSpan: PropTypes.string,
   el: PropTypes.string,
-  headingKey: PropTypes.number,
+  headingKey: PropTypes.string,
   row: PropTypes.number,
   isHeading: PropTypes.bool
 };
