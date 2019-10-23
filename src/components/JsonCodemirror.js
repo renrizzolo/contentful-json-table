@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import 'codemirror/lib/codemirror.css';
-import 'codemirror/theme/material.css';
-import 'codemirror/addon/lint/lint.css';
-import 'codemirror/mode/javascript/javascript';
-import 'codemirror/addon/edit/matchbrackets';
-import 'codemirror/addon/lint/lint';
-import 'codemirror/addon/lint/json-lint';
+// import 'codemirror/lib/codemirror.css';
+// import 'codemirror/theme/material.css';
+// import 'codemirror/addon/lint/lint.css';
+// import 'codemirror/mode/javascript/javascript';
+// import 'codemirror/addon/edit/matchbrackets';
+// import 'codemirror/addon/lint/lint';
+// import 'codemirror/addon/lint/json-lint';
 import Paragraph from '@contentful/forma-36-react-components/dist/components/Typography/Paragraph';
 import NotificationItem from '@contentful/forma-36-react-components/dist/components/Notification/NotificationItem';
 import { Controlled as CodeMirror } from 'react-codemirror2';
@@ -24,10 +24,10 @@ const JsonCodemirror = ({ value, options, onBeforeChange, onChange }) => {
 
   // subscribe to value prop changes
   useEffect(() => {
-      console.log('received new value prop');
-      
-      setEditorValue(value);
-  }, [value])
+    console.log('received new value prop');
+
+    setEditorValue(value);
+  }, [value]);
 
   const isValidJson = str => {
     var parsed;
