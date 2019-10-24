@@ -1,3 +1,4 @@
+import RowItem from './components/RowItem';
 import * as React from 'react';
 import { render } from 'react-dom';
 
@@ -24,10 +25,7 @@ interface AppProps {
 interface AppState {
   value?: { data: any[]; tableHeadings: any[] };
   changing?: object;
-  arrows?: boolean;
   readOnly?: boolean;
-  settings?: string;
-  settingsMenu?: string;
 }
 
 export class App extends React.Component<AppProps, AppState> {
@@ -35,10 +33,7 @@ export class App extends React.Component<AppProps, AppState> {
     super(props);
     this.state = {
       changing: {},
-      arrows: false,
       readOnly: false,
-      settings: null,
-      settingsMenu: null,
       value: props.sdk.field.getValue() || {
         data: [{ 'Heading 1': { text: 'col 1' } }],
         tableHeadings: [{ key: 'Heading 1' }]
@@ -268,42 +263,12 @@ export class App extends React.Component<AppProps, AppState> {
     );
   };
 
-  showSettings = (id: string) => {
-    this.setState({
-      settings: id
-    });
-  };
-
-  hideSettings = () => this.setState({ settings: null });
-
-  showSettingsMenu = (id: string) => {
-    if (this.state.settingsMenu === id) {
-      this.hideSettingsMenu();
-      return;
-    }
-    this.setState({
-      settingsMenu: id
-    });
-  };
-  hideSettingsMenu = () => this.setState({ settingsMenu: null });
-
   updateSettings = (data: object, key: string, row: number, isHeading: boolean) => {
     console.log(data, key, row);
     this.setCell(key, row, data, isHeading);
     // this.setCellValue(key, row, data, data, isHeading);
   };
 
-  showArrows = index => {
-    this.setState({
-      arrows: index
-    });
-  };
-
-  hideArrows = () => {
-    this.setState({
-      arrows: null
-    });
-  };
 
   moveRow = async (index: number, direction: string) => {
     const { data, tableHeadings } = this.getData();
@@ -348,20 +313,14 @@ export class App extends React.Component<AppProps, AppState> {
   handleFocus = event => event.target.select();
 
   render = () => {
-    console.log('va', this.state.value);
 
     const { data, tableHeadings } = this.state.value;
-    const cellDefaults = {
+    const cellDefaults: object = {
       handleFocus: this.handleFocus,
-      showSettings: this.showSettings,
-      showSettingsMenu: this.showSettingsMenu,
-      hideSettings: this.hideSettings,
       updateSettings: this.updateSettings,
       setCellValue: this.setCellValue,
       setChanging: this.setChanging,
       changing: this.state.changing,
-      settings: this.state.settings,
-      settingsMenu: this.state.settingsMenu
     };
     return (
       <div>
@@ -412,71 +371,17 @@ export class App extends React.Component<AppProps, AppState> {
             </TableHead>
             <TableBody>
               {data &&
-                data.map((key, index) => (
-                  <>
-                    {this.state.arrows === index && !this.state.readOnly && (
-                      <div
-                        style={{
-                          display: 'flex',
-                          position: 'absolute',
-                          flexDirection: 'column',
-                          width: 42,
-                          height: 56,
-                          marginLeft: -42
-                        }}>
-                        <Button
-                          disabled={index === 0}
-                          icon="ArrowUp"
-                          buttonType="naked"
-                          onClick={() => this.moveRow(index, 'up')}
-                        />
-                        {/*  <Button icon="Close" size="small" buttonType="naked"/> */}
-                        <Button
-                          disabled={index === data.length - 1}
-                          icon="ArrowDown"
-                          buttonType="naked"
-                          onClick={() => this.moveRow(index, 'down')}
-                        />
-                      </div>
-                    )}
-                    <TableRow key={index} onMouseEnter={() => this.showArrows(index)}>
-                      {tableHeadings &&
-                        tableHeadings.map((heading, i) => {
-                          const row = key[heading.key];
-                          const { text, ...rest } = row || {};
-                          const id = `row-${index}-cell-${i}`;
-                          return text && !text.startsWith('__') ? (
-                            <Cell
-                              readOnly={this.state.readOnly}
-                              isHeading={false}
-                              id={id}
-                              key={id}
-                              text={text}
-                              headingKey={heading.key}
-                              rowIndex={index}
-                              cellIndex={i}
-                              {...cellDefaults}
-                              {...rest}
-                            />
-                          ) : (
-                            !text && (
-                              <Cell
-                                readOnly={this.state.readOnly}
-                                isHeading={false}
-                                id={id}
-                                key={id}
-                                headingKey={heading.key}
-                                rowIndex={index}
-                                cellIndex={i}
-                                empty
-                                {...cellDefaults}
-                                {...rest}
-                              />
-                            )
-                          );
-                        })}
-                    </TableRow>
-                  </>
+                data.map((d, index) => (
+                  
+                  <RowItem
+                    data={d}
+                    index={index}
+                    readOnly={this.state.readOnly}
+                    moveRow={this.moveRow}
+                    tableHeadings={tableHeadings}
+                    dataLength={data.length}
+                    cellDefaults={cellDefaults}
+                  />
                 ))}
             </TableBody>
           </Table>
@@ -500,7 +405,6 @@ export class App extends React.Component<AppProps, AppState> {
         <JsonCodemirror
           value={this.state.value}
           onChange={(editor, data, value) => {
-            console.log(value);
             this.setState({ value });
           }}
         />

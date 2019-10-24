@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import TableCell from '@contentful/forma-36-react-components/dist/components/Table/TableCell';
 import TextInput from '@contentful/forma-36-react-components/dist/components/TextInput';
@@ -11,30 +11,37 @@ export const Cell = ({
   text,
   rowIndex,
   cellIndex,
-  showSettings,
-  hideSettings,
   setCellValue,
-  showSettingsMenu,
   updateSettings,
   setChanging,
   handleFocus,
   changing,
-  settings,
-  settingsMenu,
+
   empty,
   readOnly,
   ...rest
 }) => {
+  const [settingsIcon, showSettingsIcon ] = useState(false);
+  const [settingsMenu, showSettingsMenu] = useState(false);
+
+  const toggleSettingsIcon = () => showSettingsIcon(!settingsIcon)
+  const toggleSettingsMenu = () => showSettingsMenu(!settingsMenu);
+  const updateAndClose = (...args) => {
+    updateSettings(...args); 
+    showSettingsMenu(false);
+    showSettingsIcon(false);
+  }
   const { id: currentId } = changing;
   return readOnly ? (
-    <TableCell {...rest} dangerouslySetInnerHTML={{ __html: text ? text : '&nbsp'}} />
+    <TableCell {...rest} dangerouslySetInnerHTML={{ __html: text ? text : '&nbsp' }} />
   ) : (
     <TableCell
       {...rest}
       key={id}
-      style={{ position: 'relative', backgroundColor: settingsMenu === id ? '#d3dce0' : undefined }}
-      onMouseLeave={hideSettings}
-      onMouseEnter={() => showSettings(id)}>
+      style={{ position: 'relative', backgroundColor: settingsMenu ? '#d3dce0' : undefined }}
+      onMouseEnter={() => showSettingsIcon(true)}
+      onMouseLeave={() => showSettingsIcon(false)}
+      >
       <TextInput
         style={{
           border: 'none',
@@ -47,26 +54,22 @@ export const Cell = ({
         value={empty ? 'empty' : text}
         id={id}
         onChange={() => {
-          setChanging({ headingKey, rowIndex, id, isHeading }), hideSettings();
+          setChanging({ headingKey, rowIndex, id, isHeading }), toggleSettingsIcon();
         }}
       />
       {currentId === id && (
-        <InputButton
-          icon="CheckCircle"
-          onClick={() => setCellValue(headingKey, rowIndex, id)}
-        />
+        <InputButton icon="CheckCircle" onClick={() => setCellValue(headingKey, rowIndex, id)} />
       )}
-      {settings === id && currentId !== id && (
+      {settingsIcon && currentId !== id && (
         <InputButton
-          icon={settingsMenu === id ? 'Close' : 'Settings'}
-          onClick={() => showSettingsMenu(id)}
+          icon={settingsMenu ? 'Close' : 'Settings'}
+          onClick={toggleSettingsMenu}
           style={{ right: 5 }}
         />
       )}
-      {settingsMenu === id && (
+      {settingsMenu && (
         <SettingsMenu
-          updateSettings={updateSettings}
-          showSettingsMenu={showSettingsMenu}
+          updateAndClose={updateAndClose}
           isHeading={isHeading}
           headingKey={headingKey}
           row={rowIndex}
@@ -85,15 +88,12 @@ Cell.propTypes = {
   text: PropTypes.string,
   rowIndex: PropTypes.number,
   cellIndex: PropTypes.number,
-  showSettings: PropTypes.func,
-  hideSettings: PropTypes.func,
+
   setCellValue: PropTypes.func,
-  showSettingsMenu: PropTypes.func,
   updateSettings: PropTypes.func,
   setChanging: PropTypes.func,
   handleFocus: PropTypes.func,
   changing: PropTypes.object,
-  settings: PropTypes.string,
-  settingsMenu: PropTypes.string,
+
   empty: PropTypes.bool,
 };
