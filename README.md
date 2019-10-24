@@ -12,17 +12,6 @@ The extension in use:
 Same as above but in read-only view:  
 ![Contentful JSON table read-only view](https://github.com/renrizzolo/contentful-json-table/blob/master/read-only-view.png "Contentful Json Table")
 
-
-## Getting started with local development
-```bash
-npm install
-npm run login && npm run configure
-npm run start
-```
-## Requirements
-- Node 8 or higher
-- NPM 5.2 and higher
-
 ## Using the extension in production
 - in your contentful space at [app.contentful.com](https://app.contentful.com), go to settings > extensions
 - click Add extension > Install from GitHub
@@ -145,3 +134,13 @@ TableFromJson.propTypes = {
 
 export default TableFromJson;
 ```
+
+## Getting started with local development
+```bash
+npm install
+npm run login && npm run configure
+npm run start
+```
+## Requirements
+- Node 8 or higher
+- NPM 5.2 and higher
