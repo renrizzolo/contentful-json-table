@@ -65,7 +65,7 @@ export const SettingsMenu = ({
                name="el"
                labelText="el"
              />
-             <Button onClick={() => updateAndClose(state, headingKey, row, isHeading)}>Done</Button>
+             <Button onClick={() => updateAndClose(state, headingKey, row, isHeading)}>Save</Button>
            </div>
          );
        };
