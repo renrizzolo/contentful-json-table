@@ -325,7 +325,7 @@ export class App extends React.Component<AppProps, AppState> {
     };
     return (
       <div>
-        <div style={{ marginLeft: 42 }}>
+        <div style={{ marginLeft: this.state.readOnly ? 0 : 42, overflow: 'scroll' }}>
           <FieldGroup>
             <CheckboxField
               labelText={'Read-only view'}
