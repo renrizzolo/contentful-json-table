@@ -246,7 +246,8 @@ export class App extends React.Component<AppProps, AppState> {
     } else {
       console.log(data[row], data[row][key]);
       if (!data[row][key]) {
-        return;
+        data[row][key] = {};
+        // return;
       }
       data[row][key][property] = val;
     }
