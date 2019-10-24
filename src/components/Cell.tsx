@@ -16,7 +16,6 @@ export const Cell = ({
   setChanging,
   handleFocus,
   changing,
-
   empty,
   readOnly,
   ...rest
@@ -32,6 +31,7 @@ export const Cell = ({
     showSettingsIcon(false);
   }
   const { id: currentId } = changing;
+if (!empty && text.startsWith('__')) return null;
   return readOnly ? (
     <TableCell {...rest} dangerouslySetInnerHTML={{ __html: text ? text : '&nbsp' }} />
   ) : (
@@ -88,12 +88,10 @@ Cell.propTypes = {
   text: PropTypes.string,
   rowIndex: PropTypes.number,
   cellIndex: PropTypes.number,
-
   setCellValue: PropTypes.func,
   updateSettings: PropTypes.func,
   setChanging: PropTypes.func,
   handleFocus: PropTypes.func,
   changing: PropTypes.object,
-
   empty: PropTypes.bool,
 };

@@ -41,7 +41,7 @@ const RowItem = ({ data, readOnly, moveRow, index, tableHeadings, dataLength, ce
             const row = data[heading.key];
             const { text, ...rest } = row || {};
             const id = `row-${index}-cell-${i}`;
-            return text && !text.startsWith('__') ? (
+            return (
               <Cell
                 readOnly={readOnly}
                 isHeading={false}
@@ -51,24 +51,10 @@ const RowItem = ({ data, readOnly, moveRow, index, tableHeadings, dataLength, ce
                 headingKey={heading.key}
                 rowIndex={index}
                 cellIndex={i}
+                empty={!text}
                 {...cellDefaults}
                 {...rest}
               />
-            ) : (
-              !text && (
-                <Cell
-                  readOnly={readOnly}
-                  isHeading={false}
-                  id={id}
-                  key={id}
-                  headingKey={heading.key}
-                  rowIndex={index}
-                  cellIndex={i}
-                  empty
-                  {...cellDefaults}
-                  {...rest}
-                />
-              )
             );
           })}
       </TableRow>
@@ -82,6 +68,6 @@ RowItem.propTypes = {
   index: PropTypes.number,
   tableHeadings: PropTypes.array,
   dataLength: PropTypes.number,
-  cellDefaults: PropTypes.object,
+  cellDefaults: PropTypes.object
 };
 export default RowItem;
