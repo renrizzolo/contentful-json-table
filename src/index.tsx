@@ -406,12 +406,11 @@ export class App extends React.Component<AppProps, AppState> {
         <JsonCodemirror
           value={this.state.value}
           onChange={async (editor, data, value) => {
+            // poor man's debounce
             this.setState({ value });
             if ( timeout ) return;
             timeout = 5000;
             setTimeout(async() => {
-              console.log('timeout update');
-              
               await this.update()
               timeout = null;
             }, timeout);
