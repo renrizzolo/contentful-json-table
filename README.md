@@ -4,6 +4,8 @@ Who loves tables? Not me but I'd sure like to be able to have my editors create 
 
 A [Contentful](https://contentful.com) field extension for the Object field type, designed for creating nice tables.
 
+Built with [create-contentful-extension](https://github.com/contentful/create-contentful-extension) :heart:
+
 :rotating_light: work in progress!
 
 The extension in use:  
