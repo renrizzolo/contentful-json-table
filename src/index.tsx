@@ -17,7 +17,7 @@ import '@contentful/forma-36-react-components/dist/styles.css';
 import './index.css';
 import JsonCodemirror from './components/JsonCodemirror';
 import { Cell } from './components/Cell';
-
+let timeout;
 interface AppProps {
   sdk: FieldExtensionSDK;
 }
@@ -405,8 +405,16 @@ export class App extends React.Component<AppProps, AppState> {
         <br />
         <JsonCodemirror
           value={this.state.value}
-          onChange={(editor, data, value) => {
+          onChange={async (editor, data, value) => {
             this.setState({ value });
+            if ( timeout ) return;
+            timeout = 5000;
+            setTimeout(async() => {
+              console.log('timeout update');
+              
+              await this.update()
+              timeout = null;
+            }, timeout);
           }}
         />
       </div>
