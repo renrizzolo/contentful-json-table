@@ -33,7 +33,7 @@ npm run start
 
 ## Data structure
 
-:point_right: I made a [pen](https://codepen.io/renrizzolo/pen/pooeagN) that should transform typical table/csv JSON to work with this extension.
+:point_right: I made a [pen](https://codepen.io/renrizzolo/pen/pooeagN) that should transform typical table/csv JSON to work with this extension.  
 
 It goes a little something like this:
 
