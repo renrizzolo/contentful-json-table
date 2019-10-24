@@ -74,7 +74,7 @@ const JsonCodemirror = ({ value, options, onBeforeChange, onChange }) => {
 
   return (
     <div>
-      <Paragraph>Edit the raw JSON at your own risk {`>.<`}</Paragraph>
+      <Paragraph>Edit the raw JSON at your own risk {`>.<`} <br/> (this feature can be a little buggy when invalid JSON is entered!)</Paragraph>
       {message.length > 0 && (
         <NotificationItem intent="error" hasCloseButton={false}>
           {message}
