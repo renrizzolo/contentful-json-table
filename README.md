@@ -33,6 +33,8 @@ npm run start
 
 ## Data structure
 
+:point_right: I made a [pen](https://codepen.io/renrizzolo/pen/pooeagN) that should transform typical table/csv JSON to work with this extension.
+
 It goes a little something like this:
 
 ![alt text](https://github.com/renrizzolo/contentful-json-table/blob/master/data-img.png "Data structure")
